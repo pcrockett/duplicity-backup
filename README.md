@@ -6,7 +6,7 @@ My personal NAS backup script. Runs on a Raspberry Pi and backs up a Synology NA
 Dependencies
 ------------
 
-Beside duplicity, requires python and the b2 package from pip.
+Besides duplicity, requires python and the b2 package from pip.
 
 Usage
 -----
@@ -18,7 +18,6 @@ Up Next
 -------
 
 * Add support for healthchecks.io
-* Make idempotent using `mountpoint` command
 * Improve this README with links, more specific instructions.
 
 [1]: install.sh

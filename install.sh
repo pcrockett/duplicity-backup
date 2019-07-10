@@ -16,12 +16,16 @@ read -p "Offline GPG key: " offline_gpg_key
 SCRIPT_DIR=`dirname "$(readlink -f "$0")"`
 VARS_SCRIPT="$SCRIPT_DIR/vars.sh"
 
+umask 0077
 cat > "$VARS_SCRIPT" << EOF
 #!/bin/bash
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eeuo pipefail
 
+export BACKUP_USER="$USER"
+export BACKUP_UID="$UID"
+export BACKUP_GID="`id -g $USER`"
 export NAS_HOST="$host"
 export NAS_USERNAME="$username"
 export NAS_PASSWORD="$password"

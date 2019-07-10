@@ -23,8 +23,12 @@ mount_all() {
       mkdir "$MOUNT_DIR/$share"
     fi
 
+    if mountpoint -q "$MOUNT_DIR/$share"; then
+      continue
+    fi
+
     mount -t cifs \
-      -o "username=$NAS_USERNAME,password=$NAS_PASSWORD,vers=2.0" \
+      -o "username=$NAS_USERNAME,password=$NAS_PASSWORD,vers=2.0,file_mode=0400,dir_mode=0500,gid=$BACKUP_GID,uid=$BACKUP_UID" \
       "//$NAS_HOST/$share" "$MOUNT_DIR/$share"
   done
 
@@ -37,11 +41,13 @@ unmount_all() {
 }
 
 run_backup() {
-  export PASSPHRASE="$GPG_PASSPHRASE"
-  duplicity "$MOUNT_DIR" "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET" \
-    --sign-key "$GPG_KEY" \
-    --encrypt-key "$GPG_KEY" \
-    --encrypt-key "$GPG_OFFLINE_KEY"
+  sudo -u "$BACKUP_USER" \
+    PASSPHRASE="$GPG_PASSPHRASE" \
+    SIGN_PASSPHRASE="$GPG_PASSPHRASE" \
+    duplicity "$MOUNT_DIR" "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET" \
+      --sign-key "$GPG_KEY" \
+      --encrypt-key "$GPG_KEY" \
+      --encrypt-key "$GPG_OFFLINE_KEY"
 }
 
 mount_all
