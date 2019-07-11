@@ -13,8 +13,6 @@ fi
 
 source "$VARS_SCRIPT"
 
-GPG_PASSPHRASE=""
-
 mount_all() {
 
   for share in ${SHARES[@]}; do
@@ -45,8 +43,8 @@ run_backup() {
     PASSPHRASE="$GPG_PASSPHRASE" \
     SIGN_PASSPHRASE="$GPG_PASSPHRASE" \
     duplicity "$MOUNT_DIR" "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET" \
-      --sign-key "$GPG_KEY" \
-      --encrypt-key "$GPG_KEY" \
+      --sign-key "$GPG_SIGN_KEY" \
+      --encrypt-key "$GPG_ENCR_KEY" \
       --encrypt-key "$GPG_OFFLINE_KEY"
 }
 
