@@ -25,6 +25,9 @@ source "$VARS_SCRIPT"
 
 FILE_TO_RESTORE="$1"
 
+echo "Restoring to $RESTORE_DIR..."
+echo "If asked for a passphrase, leave blank and hit enter."
+
 PASSPHRASE="$GPG_PASSPHRASE"
 duplicity restore \
   --file-to-restore "$FILE_TO_RESTORE" \

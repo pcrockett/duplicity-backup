@@ -34,9 +34,9 @@ export MOUNT_DIR=$mount_dir
 export B2_KEY_ID="$b2_key_id"
 export B2_KEY="$b2_key"
 export B2_BUCKET="$b2_bucket"
-export GPG_ENCR_KEY="$gpg_encr_key!"
-export GPG_SIGN_KEY="$gpg_sign_key!"
-export GPG_OFFLINE_KEY="$offline_gpg_key!"
+export GPG_ENCR_KEY="$gpg_encr_key"
+export GPG_SIGN_KEY="$gpg_sign_key"
+export GPG_OFFLINE_KEY="$offline_gpg_key"
 export GPG_PASSPHRASE=""
 export SHARES=(
   # Add shares here
