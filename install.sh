@@ -10,8 +10,7 @@ read -p "Root mount directory: " mount_dir
 read -p "Backblaze master key ID: " b2_key_id
 read -p "Backblaze key: " b2_key
 read -p "Backblaze bucket: " b2_bucket
-read -p "Encryption GPG key (use subkey ID): " gpg_encr_key
-read -p "Signing GPG key (use subkey ID): " gpg_sign_key
+read -p "Local encryption GPG key (use subkey ID): " gpg_encr_key
 read -p "Offline encryption GPG key (use subkey ID): " offline_gpg_key
 
 SCRIPT_DIR=`dirname "$(readlink -f "$0")"`
@@ -35,7 +34,7 @@ export B2_KEY_ID="$b2_key_id"
 export B2_KEY="$b2_key"
 export B2_BUCKET="$b2_bucket"
 export GPG_ENCR_KEY="$gpg_encr_key"
-export GPG_SIGN_KEY="$gpg_sign_key"
+export GPG_SIGN_KEY="$gpg_encr_key"
 export GPG_OFFLINE_KEY="$offline_gpg_key"
 export GPG_PASSPHRASE=""
 export SHARES=(
