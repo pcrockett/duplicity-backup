@@ -49,5 +49,11 @@ run_backup() {
 }
 
 mount_all
-run_backup || true
-unmount_all
+
+if run_backup; then
+  unmount_all
+  exit 0
+else
+  unmount_all
+  exit 1
+fi

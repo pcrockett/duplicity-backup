@@ -12,6 +12,7 @@ read -p "Backblaze key: " b2_key
 read -p "Backblaze bucket: " b2_bucket
 read -p "Local encryption GPG key (use subkey ID): " gpg_encr_key
 read -p "Offline encryption GPG key (use subkey ID): " offline_gpg_key
+read -p "Heartbeat ping URL: " ping_url
 
 SCRIPT_DIR=`dirname "$(readlink -f "$0")"`
 VARS_SCRIPT="$SCRIPT_DIR/vars.sh"
@@ -37,6 +38,7 @@ export GPG_ENCR_KEY="$gpg_encr_key"
 export GPG_SIGN_KEY="$gpg_encr_key"
 export GPG_OFFLINE_KEY="$offline_gpg_key"
 export GPG_PASSPHRASE=""
+export PING_URL="$ping_url"
 export SHARES=(
   # Add shares here
 )
