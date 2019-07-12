@@ -9,7 +9,7 @@ RUN_SCRIPT="$SCRIPT_DIR/run.sh"
 
 source "$VARS_SCRIPT"
 
-& "$RUN_SCRIPT"
+"$RUN_SCRIPT"
 
 # This will only execute when the run script exits with a good status code
 curl -fsS --retry 3 "$PING_URL" > /dev/null;
