@@ -7,18 +7,18 @@ Assumptions
 -----------
 
 * Backup scripts are running on a Raspberry Pi model 3b+.
-* You are backing up a several Samba network shares (only tested with a Synology NAS).
+* You are backing up Samba network shares (only tested with a Synology NAS).
 * You are saving backup data to a [Backblaze B2][1] bucket.
 * You are using GPG to encrypt your backups. This backup uses _two_ keys:
     * One key is generated on the Raspberry Pi, and is only used for backup encryption, decryption, and signing. It never leaves the Raspberry Pi.
     * The other key is a super-secret offline key that you keep on a flash drive. In the event that your Raspberry Pi dies, you can still restore the backup using this key.
-* You are using a service like [Heathchecks.io][2] to monitor your backup, and send you notifications if it stops running for some reason.
+* You are using a service like [Heathchecks.io][2] to monitor your backup and send you notifications if it stops running for some reason.
 * You have an email address which can receive backup log emails.
 
 Dependencies
 ------------
 
-Besides duplicity, requires python, msmtp, and the b2 package from pip.
+Besides duplicity, python, msmtp, and the b2 package from pip are also required.
 
 ```
 sudo apt install -y duplicity python-pip msmtp-mta
@@ -36,8 +36,23 @@ Usage
     0 23 * * 5 [PATH_TO_DUPLICITY_BACKUP]/cronjob.sh >/home/[USERNAME]/cron-log.txt 2>&1
     ```
 
+Restoring Files
+---------------
+
+Use [list-files.sh][6] to list all the files currently backed up, and [restore.sh][7] to restore files from backup.
+
+Duplicity is a very full-featured backup program, and supports much more than just listing files and restoring them. However these are relatively simple scripts, so you can take a peek inside and use them to help figure out how to manually run your own duplicity commands.
+
+To Do
+-----
+
+* Periodically verify backup
+* Prune old files from backup
+
 [1]: https://www.backblaze.com/b2/cloud-storage.html
 [2]: https://healthchecks.io
 [3]: install.sh
 [4]: run.sh
 [5]: cronjob.sh
+[6]: list-files.sh
+[7]: restore.sh
