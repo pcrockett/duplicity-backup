@@ -14,8 +14,11 @@ curl -fsS --retry 3 "$PING_URL/start" > /dev/null
 
 if $RUN_SCRIPT >"$LOG_FILE" 2>&1; then
 
-  msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL"\
-  <<EOF
+  # Success. Email the log file to the user. We need to run as the backup user,
+  # because that's the account where the email settings are saved.
+  sudo -u "$BACKUP_USER" \
+    msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
+    <<EOF
 Subject: [$NAS_HOST] Backup Success
 `cat $LOG_FILE`
 EOF
@@ -24,7 +27,10 @@ EOF
 
 else
 
-  msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL"\
+  # Failure. Email the log file to the user. We need to run as the backup user,
+  # because that's the account where the email settings are saved.
+  sudo -u "$BACKUP_USER" \
+    msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
   <<EOF
 Subject: [$NAS_HOST] Backup Failure
 `cat $LOG_FILE`
