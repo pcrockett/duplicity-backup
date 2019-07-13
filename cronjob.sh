@@ -10,30 +10,24 @@ LOG_FILE="$SCRIPT_DIR/backup-log.txt"
 
 source "$VARS_SCRIPT"
 
+# Ping monitor service to let them know we've started the backup.
+# This enables us to have stats about how long the backup takes.
 curl -fsS --retry 3 "$PING_URL/start" > /dev/null
 
+BACKUP_STATUS="Failure"
 if $RUN_SCRIPT >"$LOG_FILE" 2>&1; then
 
-  # Success. Email the log file to the user. We need to run as the backup user,
-  # because that's the account where the email settings are saved.
-  sudo -u "$BACKUP_USER" \
-    msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
-    <<EOF
-Subject: [$NAS_HOST] Backup Success
-`cat $LOG_FILE`
-EOF
-
+  BACKUP_STATUS="Success"
+  # Ping monitor service to let them know everything went well.
   curl -fsS --retry 3 "$PING_URL" > /dev/null
 
-else
+fi
 
-  # Failure. Email the log file to the user. We need to run as the backup user,
-  # because that's the account where the email settings are saved.
-  sudo -u "$BACKUP_USER" \
-    msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
+# Email the log file to the user. We need to run as the backup user,
+# because that's the account where the email settings are saved.
+sudo -u "$BACKUP_USER" \
+  msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
   <<EOF
-Subject: [$NAS_HOST] Backup Failure
+Subject: [$NAS_HOST] Backup $BACKUP_STATUS
 `cat $LOG_FILE`
 EOF
-
-fi
