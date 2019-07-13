@@ -10,6 +10,8 @@ LOG_FILE="$SCRIPT_DIR/backup-log.txt"
 
 source "$VARS_SCRIPT"
 
+curl -fsS --retry 3 "$PING_URL/start" > /dev/null
+
 if $RUN_SCRIPT >"$LOG_FILE" 2>&1; then
 
   msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL"\
