@@ -6,10 +6,26 @@ set -Eeuo pipefail
 SCRIPT_DIR=`dirname "$(readlink -f "$0")"`
 VARS_SCRIPT="$SCRIPT_DIR/vars.sh"
 RUN_SCRIPT="$SCRIPT_DIR/run.sh"
+LOG_FILE="$SCRIPT_DIR/backup-log.txt"
 
 source "$VARS_SCRIPT"
 
-"$RUN_SCRIPT"
+if $RUN_SCRIPT >"$LOG_FILE" 2>&1; then
 
-# This will only execute when the run script exits with a good status code
-curl -fsS --retry 3 "$PING_URL" > /dev/null;
+  msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL"\
+  <<EOF
+Subject: [$NAS_HOST] Backup Success
+`cat $LOG_FILE`
+EOF
+
+  curl -fsS --retry 3 "$PING_URL" > /dev/null
+
+else
+
+  msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL"\
+  <<EOF
+Subject: [$NAS_HOST] Backup Failure
+`cat $LOG_FILE`
+EOF
+
+fi
