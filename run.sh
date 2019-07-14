@@ -22,7 +22,7 @@ mount_share() {
   fi
 
   if mountpoint -q "$MOUNT_DIR/$share"; then
-    # Do nothing; already mounted
+    echo "$share already mounted. Continuing..."
   else
     mount -t cifs \
       -o "username=$NAS_USERNAME,password=$NAS_PASSWORD,vers=2.0,file_mode=0400,dir_mode=0500,gid=$BACKUP_GID,uid=$BACKUP_UID" \
