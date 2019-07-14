@@ -46,7 +46,7 @@ backup_share() {
   sudo -u "$BACKUP_USER" \
     PASSPHRASE="$GPG_PASSPHRASE" \
     SIGN_PASSPHRASE="$GPG_PASSPHRASE" \
-    duplicity "$MOUNT_DIR" "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET/$share/" \
+    duplicity "$MOUNT_DIR/$share/" "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET/$share/" \
       --sign-key "$GPG_SIGN_KEY" \
       --encrypt-key "$GPG_ENCR_KEY!" \
       --encrypt-key "$GPG_OFFLINE_KEY!"
