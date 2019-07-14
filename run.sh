@@ -11,6 +11,11 @@ if [ ! -f "$VARS_SCRIPT" ]; then
   exit 1
 fi
 
+if [ ps -e | grep duplicity > /dev/null ]; then
+  echo "A previous backup is still running. Aborting."
+  exit 1
+fi
+
 source "$VARS_SCRIPT"
 
 mount_share() {
