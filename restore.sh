@@ -11,15 +11,16 @@ if [ ! -f "$VARS_SCRIPT" ]; then
   exit 1
 fi
 
-if [ $# -ne 2 ]; then
-  echo "Expecting 2 arguments: The file to restore, and the destination path."
+if [ $# -ne 3 ]; then
+  echo "Expecting 3 arguments: The share name, the file / directory path to restore, and the destination path."
   exit 1
 fi
 
 source "$VARS_SCRIPT"
 
-FILE_TO_RESTORE="$1"
-DEST_PATH="$2"
+SHARE="$1"
+FILE_TO_RESTORE="$2"
+DEST_PATH="$3"
 
 echo "Restoring to $DEST_PATH..."
 echo "If asked for a passphrase, leave blank and hit enter."
@@ -29,4 +30,4 @@ duplicity restore \
   --file-to-restore "$FILE_TO_RESTORE" \
   --sign-key "$GPG_SIGN_KEY" \
   --encrypt-key "$GPG_ENCR_KEY" \
-  "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET" "$DEST_PATH"
+  "b2://$B2_KEY_ID:$B2_KEY@$B2_BUCKET/$SHARE/" "$DEST_PATH"
