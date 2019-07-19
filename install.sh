@@ -14,6 +14,7 @@ read -p "Local encryption GPG key (use subkey ID): " gpg_encr_key
 read -p "Offline encryption GPG key (use subkey ID): " offline_gpg_key
 read -p "Heartbeat ping URL: " ping_url
 read -p "Email address to send logs to: " recipient_email
+read -p "Email recipient's GPG key: " recipient_key
 read -p "Email address to send from: " sender_email
 
 SCRIPT_DIR=`dirname "$(readlink -f "$0")"`
@@ -42,6 +43,7 @@ export GPG_OFFLINE_KEY="$offline_gpg_key"
 export GPG_PASSPHRASE=""
 export PING_URL="$ping_url"
 export RECIPIENT_EMAIL="$recipient_email"
+export RECIPIENT_KEY="$recipient_key"
 export SENDER_EMAIL="$sender_email"
 export SHARES=(
   # Add shares here

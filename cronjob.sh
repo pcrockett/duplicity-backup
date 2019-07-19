@@ -29,5 +29,5 @@ sudo -u "$BACKUP_USER" \
   msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
   <<EOF
 Subject: [$NAS_HOST] Backup $BACKUP_STATUS
-`cat $LOG_FILE`
+`cat $LOG_FILE | gpg --armor --sign --encrypt --recipient "$RECIPIENT_KEY"`
 EOF
