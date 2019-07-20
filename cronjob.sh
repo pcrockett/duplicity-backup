@@ -25,9 +25,15 @@ fi
 
 # Email the log file to the user. We need to run as the backup user,
 # because that's the account where the email settings are saved.
+
+# We're encrypting the email because sometimes the duplicity log will
+# include authorization tokens, and I'm not sure how sensitive those
+# are, or if they can be reused once the backup is finished.
+ENCRYPTED_LOG=`cat "$LOG_FILE" | sudo -u "$BACKUP_USER" gpg --armor --sign --encrypt --recipient "$RECIPIENT_KEY"`
+
 sudo -u "$BACKUP_USER" \
   msmtp -a "$SENDER_EMAIL" "$RECIPIENT_EMAIL" \
   <<EOF
 Subject: [$NAS_HOST] Backup $BACKUP_STATUS
-`cat $LOG_FILE | gpg --armor --sign --encrypt --recipient "$RECIPIENT_KEY"`
+$ENCRYPTED_LOG
 EOF
